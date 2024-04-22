@@ -6,11 +6,11 @@ from typing import (
     Generator,
     Generic,
     Iterator,
-    Self,
     Sequence,
 )
 
 from langchain_core.runnables import RunnableConfig
+from typing_extensions import Self
 
 from langgraph.channels.base import AsyncChannelsManager, ChannelsManager
 from langgraph.managed.base import ManagedValue, V
