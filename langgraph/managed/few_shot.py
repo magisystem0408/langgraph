@@ -6,6 +6,7 @@ from typing import (
     Generator,
     Generic,
     Iterator,
+    Self,
     Sequence,
 )
 
@@ -39,19 +40,19 @@ class FewShotExamples(ManagedValue[Sequence[V]], Generic[V]):
     @contextmanager
     def enter(
         cls, config: RunnableConfig, graph: "Pregel"
-    ) -> Generator["ManagedValue", None, None]:
-        value = cls(config, graph)
-        value.examples = list(value.iter())
-        yield value
+    ) -> Generator[Self, None, None]:
+        with super().enter(config, graph) as value:
+            value.examples = list(value.iter())
+            yield value
 
     @classmethod
     @asynccontextmanager
     async def aenter(
         cls, config: RunnableConfig, graph: "Pregel"
-    ) -> AsyncGenerator["ManagedValue", None]:
-        value = cls(config, graph)
-        value.examples = [e async for e in value.aiter()]
-        yield value
+    ) -> AsyncGenerator[Self, None]:
+        async with super().aenter(config, graph) as value:
+            value.examples = [e async for e in value.aiter()]
+            yield value
 
     def __call__(self, step: int, task: PregelTaskDescription) -> Sequence[V]:
         return self.examples
