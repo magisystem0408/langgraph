@@ -61,7 +61,7 @@ def copy_notebooks():
     # Nested ones are mostly tutorials rn
     for root, dirs, files in os.walk(examples_dir):
         if any(
-            path.startswith(".") or path.startswith("__") for path in root.split(os.sep)
+            path.startswith((".", "__")) for path in root.split(os.sep)
         ):
             continue
         if any(path in _HOW_TOS for path in root.split(os.sep)):
